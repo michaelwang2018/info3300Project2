@@ -125,7 +125,7 @@ svg{
 table {
     border-collapse: collapse;
 }
-td.airportTD{
+td.teamTD{
     border: 1px solid black;
     text-align: left;
     padding: .8em 0;
@@ -197,7 +197,7 @@ hr:after{
 }
 
 .unselectable{
-  background: gray;
+  background: purple;
 }
 .unselectable:hover{
   background: gray;
