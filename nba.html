@@ -33,7 +33,7 @@
 
   <div id = "seasons" class = "seasonInput" style = "position: fixed; top: 40%; right: 25px ">
   <tr>
-    <td> <a style = "background: #FFFFFF" onclick = "changeBackground('#FFFFFF', 1)" class = "home-cta btn" id = "twentyeighteen"> 2017-2018 </a> </td>
+    <td> <a style = "background: black" onclick = "changeBackground('#FFFFFF', 1)" class = "home-cta btn" id = "twentyeighteen"> 2017-2018 </a> </td>
     <td> <a onclick = "changeBackground('#ffd700', 2)" class = "home-cta btn" id = "twentyseventeen"> 2016-2017 </a> </td>
     <td> <a onclick = "changeBackground('#800000', 3)" class = "home-cta btn" id = "twentysixteen"> 2015-2016 </a> </td>
     <td> <a onclick = "changeBackground('#0000FF', 4)" class = "home-cta btn" id = "twentyfifteen"> 2014-2015 </a> </td>
@@ -96,7 +96,7 @@
 
 <script>
 var svg = d3.select("svg");
-var projection = d3.geoAlbersUsa().scale(500);
+var projection = d3.geoAlbersUsa().scale(2000);
 var path = d3.geoPath().projection(projection);
 var teams;
 var fifteen;
@@ -129,6 +129,35 @@ var teamNames = ['Hawks', 'Nets', 'Celtics', 'Hornets', 'Bulls', 'Cavaliers', 'M
 //           'MDW DFW MIA ORD HNL IAH JFK', 'SLC FLL IAD LGA', 'IAD BWI DCA PHL SLC',
 //           'SAN DCA FLL LGA TPA', 'HNL MIA BOS BWI CLT DCA DTW FLL LGA MCO MDW PHL TPA',
 //           'TPA HNL MCO PDX SAN', 'PDX MIA FLL LGA MCO TPA']
+
+var abbrDict = {
+  'Atlanta Hawks' : 'ATL',
+   'Brooklyn Nets' :'BKN',
+   'Boston Celtics' : 'BOS',
+   'Charlotte Hornets' : 'CHA',
+   'Chicago Bulls' : 'CHI',
+   'Cleveland Cavaliers' : 'CLE',
+   'Dallas Mavericks' : 'DAL',
+   'Denver Nuggets' : 'DEN',
+   'Detroit Pistons' : 'DET',
+   'Golden State Warriors' : 'GSW',
+   'Houston Rockets' : 'HOU',
+   'Indiana Pacers' : 'IND',
+   'Los Angeles Clippers' : 'LAC',
+   'Los Angeles Lakers' : 'LAL',
+   'Memphis Grizzlies' : 'MEM',
+   'Milwaukee Bucks': 'MIL',
+   'Miami Heat' : 'MIA',
+   'Minnesota Timberwolves' : 'MIN',
+   'New Orleans Pelicans' : 'NOP',
+   'New York Knicks' : 'NYK',
+   'Oklahoma City Thunder' : 'OKC',
+   'Orlando Magic' : 'ORL',
+   'Philadelphia 76ers' : 'PHI','Phoenix Suns' : 'PHX',
+   'Portland Trail Blazers' : 'POR',
+   'Sacramento Kings' : 'SAC', 'San Antonio Spurs' : 'SAS', 'Toronto Raptors' : 'TOR', 'Utah Jazz' : 'UTA',
+   'Washington Wizards' : 'WAS'
+}
 
 var team1 = "";
 var team2 = "";
@@ -210,7 +239,7 @@ function populateCities(){
     var tr = tableBody.append("TR");
     for(var j = 0; j < 3; j++){
       var td = tr.append("TD")
-      .attr("id", pairs[x].slice(-3))
+      .attr("id", abbrDict[pairs[x]])
       .text(pairs[x])
       .style("height", "30px").style("width", "100px")
       .attr("class", "teamTD");
@@ -234,6 +263,7 @@ function populateCities(){
         if((teamOne == "" && otherTeam == "") || (teamOne != "" && otherTeam != "")) {
           reset();
           var unavail = dict[curr];
+
           unavail.forEach(function(code){
             var port = d3.select("#" + code);
             port.classed("unselectable", true);
@@ -264,7 +294,7 @@ function plotAll() {
   // displayFlightTimes(teamOne, otherTeam, season);
   // displayPrice(teamOne, otherTeam,season);
   displayStats(teamOne, otherTeam, "2017-2018");
-  showCancellations(teamOne, otherTeam, season);
+  // showCancellations(teamOne, otherTeam, season);
 }
 
 function reset() {
@@ -283,24 +313,25 @@ function displayCities() {
 
    cities.exit().remove;
    cities = cities.enter().append("circle")
-   .attr("class", "airport")
-   .attr("r", 3)
+   .attr("class", "stadium")
+   .attr("r", 4)
    .style("fill", "#ffd700")
    .merge(cities);
 
+
    cities
    .attr("cx", function(d) {
-     var coord = [teams["$" + d.slice(-3)].Longitude,teams["$" + d.slice(-3)].Latitude]
+     var coord = [teams["$" + abbrDict[d]].Longitude,teams["$" + abbrDict[d]].Latitude]
 
      return projection(coord)[0];
    })
    .attr("cy", function(d) {
-     var coord = [teams["$" + d.slice(-3)].Longitude,teams["$" + d.slice(-3)].Latitude]
+     var coord = [teams["$" + abbrDict[d]].Longitude,teams["$" + abbrDict[d]].Latitude]
      return projection(coord)[1];
    })
    .on("mouseover", function(d) {
      var x = d3.select(this);
-     x.attr("r", 5)
+     x.attr("r", 12)
      .style("fill", "rgba(255,223,0, .5)");
      d3.select("#cityLabel")
      .text(d)
@@ -308,7 +339,7 @@ function displayCities() {
    })
    .on("mouseout", function(d) {
      var x = d3.select(this);
-     x.attr("r", 3)
+     x.attr("r", 4)
      .style("fill", "#ffd700");
      d3.select("#cityLabel")
      .attr("visibility", "hidden");
@@ -330,10 +361,25 @@ function displayCities() {
     .attr("class", "info")
     .attr("fill", "transparent")
     .attr('stroke', "rgb(0,0,255)")
-    .attr('stroke-width', "10")
+    .attr('stroke-width', "4")
     .attr("stroke-dasharray", ("10,10"))
     .style("fill", "#FFFFFF");
  }
+
+ function displayStats(teamOne, otherTeam, year) {
+
+   // var wins1 = teams[teamOne].["$" + year.slice(-4)];
+   // console.log(wins1);
+   // if (year == "2017-2018") {
+   //   var wins1 = teams[teamOne].["$" + year.slice(-4)];
+   //   console.log(wins1);
+   // }
+   // var div = d3.select("#General");
+   // div.append("h3")
+   // .attr("class", "info")
+   // .text(teamOne + "wins: " + wins1);
+ }
+
 
 
 displayStats('Atlanta ATL', 'Golden State GSW', "2017-2018");
@@ -427,7 +473,7 @@ d3.queue()
       return [d.Team1, d.PTS1, d.Team2, d.PTS2, d.Date];
     });
 
-    ontime.each(function(d) {
+    fifteen.each(function(d) {
       d.PTS1 = Number(d.PTS1);
       d.PTS2 = Number(d.PTS2);
     });
@@ -436,7 +482,7 @@ d3.queue()
       return [d.Team1, d.PTS1, d.Team2, d.PTS2, d.Date];
     });
 
-    ontime.each(function(d) {
+    sixteen.each(function(d) {
       d.PTS1 = Number(d.PTS1);
       d.PTS2 = Number(d.PTS2);
     });
@@ -445,7 +491,7 @@ d3.queue()
       return [d.Team1, d.PTS1, d.Team2, d.PTS2, d.Date];
     });
 
-    ontime.each(function(d) {
+    seventeen.each(function(d) {
       d.PTS1 = Number(d.PTS1);
       d.PTS2 = Number(d.PTS2);
     });
@@ -454,12 +500,10 @@ d3.queue()
       return [d.Team1, d.PTS1, d.Team2, d.PTS2, d.Date];
     });
 
-    ontime.each(function(d) {
+    eighteen.each(function(d) {
       d.PTS1 = Number(d.PTS1);
       d.PTS2 = Number(d.PTS2);
     });
-
-    console.log(eighteen);
 
 
     teams = d3.map(rawTeams, function(d) {
