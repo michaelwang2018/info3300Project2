@@ -33,7 +33,7 @@
 
   <div id = "seasons" class = "seasonInput" style = "position: fixed; top: 40%; right: 25px ">
   <tr>
-    <td> <a style = "background: black" onclick = "changeBackground('#FFFFFF', 1)" class = "home-cta btn" id = "twentyeighteen"> 2017-2018 </a> </td>
+    <td> <a style = "background: black" onclick = "changeBackground('black', 1)" class = "home-cta btn" id = "twentyeighteen"> 2017-2018 </a> </td>
     <td> <a onclick = "changeBackground('#ffd700', 2)" class = "home-cta btn" id = "twentyseventeen"> 2016-2017 </a> </td>
     <td> <a onclick = "changeBackground('#800000', 3)" class = "home-cta btn" id = "twentysixteen"> 2015-2016 </a> </td>
     <td> <a onclick = "changeBackground('#0000FF', 4)" class = "home-cta btn" id = "twentyfifteen"> 2014-2015 </a> </td>
@@ -442,6 +442,7 @@ function resetColors() {
   for(var i = 0; i < curr.length; i++) {
     curr[i].style.backgroundColor = "#FFFFFF";
   }
+  document.getElementById("twentyeighteen").style.backgroundColor = '#000000';
 }
 
 function conditionalReset() {
