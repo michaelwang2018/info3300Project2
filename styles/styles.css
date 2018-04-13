@@ -6,14 +6,16 @@
 body {
   width: 100%;
   text-align:center;
+  
   background: #FFFFFF;
   color: black;
 }
 
 .main {
-  padding: 15px;
   margin: 0 auto;
   width: 80%;
+  padding: 10px;
+
   display: inline-block;
 }
 
@@ -43,11 +45,11 @@ body {
 }
 
 .state{
-  fill: gray;
+  fill: blue;
 }
 
 path.state{
-    fill: gray;
+    fill: blue;
 }
 
 path{

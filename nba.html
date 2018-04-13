@@ -33,10 +33,10 @@
 
   <div id = "seasons" class = "seasonInput" style = "position: fixed; top: 40%; right: 25px ">
   <tr>
-    <td> <a style = "background: black" onclick = "changeBackground('black', 1)" class = "home-cta btn" id = "twentyeighteen"> 2017-2018 </a> </td>
+    <td> <a style = "background: gray" onclick = "changeBackground('gray', 1)" class = "home-cta btn" id = "twentyeighteen"> 2017-2018 </a> </td>
     <td> <a onclick = "changeBackground('#ffd700', 2)" class = "home-cta btn" id = "twentyseventeen"> 2016-2017 </a> </td>
     <td> <a onclick = "changeBackground('#800000', 3)" class = "home-cta btn" id = "twentysixteen"> 2015-2016 </a> </td>
-    <td> <a onclick = "changeBackground('#0000FF', 4)" class = "home-cta btn" id = "twentyfifteen"> 2014-2015 </a> </td>
+    <td> <a onclick = "changeBackground('#ffd700', 4)" class = "home-cta btn" id = "twentyfifteen"> 2014-2015 </a> </td>
     <br>
     <br>
     <td> <a onclick = "conditionalReset()" class = "home-cta btn" id = "reset"> Reset </a> </td>
@@ -62,32 +62,28 @@
   <hr>
   <div id = "General" class = "card-panel infoCard">
     <h1> General Team Stats </h1>
-    <!-- <i onclick = "replay()" class="material-icons small btn replayBtn">replay</i> -->
+    <!-- TODO: Place both teams' logo upon selection.
+     Make 82 basketballs for each team, change the colors for the
+    number of wins that team won in the given season -->
   </div>
 
   <!-- Delays -->
   <hr class = "infoCard">
   <div id = "Matchup" class = "card-panel infoCard">
       <h1> Season Matchup Record </h1>
-      <!-- <h3> Hover over to view expected arrival delays </h3> -->
+      <!-- TODO: Display the scores using a transition circle or something
+      inspiration here:
+      http://jsfiddle.net/chrisJamesC/9ChXk/18/
+      -->
   </div>
 
 <hr class = "infoCard">
 <div id = "Summary" class = "card-panel infoCard">
   <h1>Season Leaders</h1>
+  <!-- TODO: Not necessary, but append the summary data, including season MVP, ROTY, Rebounding leader, scoring leader, assist leader -->
 </div>
 
-<!-- Cancellations -->
-<!-- <hr class = "infoCard">
-<div id = 'Cancellations' class = "card-panel infoCard">
-  <h1> Cancellations </h1>
-  <div class = "">
-      <object type = "image/svg+xml" data = "assets/airplane_red.svg" style = "width: 45px">
-        Red Plane
-      </object>
-    <span>= One flight cancelled</span>
-  </div>
-</div> -->
+
 <hr class = "infoCard">
 <div style = "height: 25px"></div>
 <h3> Rachel Shim, Trevor Smith, and Michael Wang </h3>
@@ -95,10 +91,20 @@
 
 
 <script>
+
+// preparing the US map
 var svg = d3.select("svg");
 var projection = d3.geoAlbersUsa().scale(2000);
 var path = d3.geoPath().projection(projection);
+
+// variables containing dataset data.
+// teams has each team's season record by year,
+// as well as the GPS coordinates
 var teams;
+// These variables have each of the head to head Matchups
+// they have every single game from the corresponding season
+// with the number representing the year the season ends
+// ie. fifteen = the 2014-2015 season
 var fifteen;
 var sixteen;
 var seventeen;
@@ -106,29 +112,12 @@ var eighteen;
 
 var season = 1;
 
-// var top30Airports = ['ATL', 'LAX', 'ORD', 'DFW', 'JFK', 'DEN', 'SFO', 'CLT', 'LAS', 'PHX',
-//           'MIA', 'IAH', 'SEA', 'MCO', 'EWR', 'MSP', 'BOS', 'DTW', 'PHL', 'LGA',
-//            'FLL', 'BWI', 'DCA', 'MDW', 'SLC', 'IAD', 'SAN', 'HNL','TPA', 'PDX']
 var abbr = ['ATL', 'BKN', 'BOS', 'CHA', 'CHI', 'CLE', 'DAL', 'DEN', 'DET', 'GSW', 'HOU', 'IND', 'LAC', 'LAL', 'MEM', 'MIA', 'MIL', 'MIN', 'NOP', 'NYK', 'OKC', 'ORL', 'PHI', 'PHX', 'POR', 'SAC', 'SAS', 'TOR', 'UTA', 'WAS']
 
 
 var nbaCities = ['Atlanta', 'Brooklyn', 'Boston', 'Charlotte', 'Chicago', 'Cleveland', 'Dallas', 'Denver', 'Detroit', 'Golden State', 'Houston', 'Indiana', 'Los Angeles', 'Los Angeles', 'Memphis', 'Miami', 'Milwaukee', 'Minnesota', 'New Orleans', 'New York', 'Oklahoma City', 'Orlando', 'Philadelphia', 'Phoenix', 'Portland', 'Sacramento', 'San Antonio', 'Toronto', 'Utah', 'Washington']
 
-// var airportCityNames = ['Atlanta', 'Los Angeles', 'Chicago', 'Dallas/Fort Worth', 'New York',
-//           'Denver', 'San Francisco', 'Charlotte', 'Las Vegas', 'Phoenix', 'Miami', 'Houston',
-//           'Seattle', 'Orlando', 'Newark', 'Minneapolis', 'Boston', 'Detroit', 'Philadelphia',
-//           'New York', 'Fort Lauderdale', 'Baltimore', 'Washington', 'Chicago', 'Salt Lake City',
-//           'Washington', 'San Diego', 'Honolulu', 'Tampa', 'Portland']
-
 var teamNames = ['Hawks', 'Nets', 'Celtics', 'Hornets', 'Bulls', 'Cavaliers', 'Mavericks', 'Nuggets', 'Pistons', 'Warriors', 'Rockets', 'Pacers', 'Clippers', 'Lakers', 'Grizzlies', 'Heat', 'Bucks', 'Timberwolves', 'Pelicans', 'Knicks', 'Thunder', 'Magic', '76ers', 'Suns', 'Trail Blazers', 'Kings', 'Spurs', 'Raptors', 'Jazz', 'Wizards']
-// var unavailablePaths = ['ATL', 'LAX LGA', 'ORD MDW', 'DFW MDW', 'JFK EWR IAH LGA MDW PHL',
-//           'DEN', 'SFO LGA TPA', 'CLT HNL', 'LAS LGA', 'PHX LGA', 'MIA FLL HNL MDW PDX',
-//           'IAH JFK MDW', 'SEA LGA', 'MCO HNL PDX TPA', 'EWR JFK LGA', 'MSP', 'BOS HNL',
-//           'DTW HNL', 'PHL EWR HNL IAD JFK', 'LGA LAX SEA BWI EWR HNL JFK LAS PDX PHX SAN SFO SLC',
-//           'FLL MIA HNL PDX SAN SLC', 'BWI DCA HNL IAD LGA', 'DCA BWI HNL IAD SAN',
-//           'MDW DFW MIA ORD HNL IAH JFK', 'SLC FLL IAD LGA', 'IAD BWI DCA PHL SLC',
-//           'SAN DCA FLL LGA TPA', 'HNL MIA BOS BWI CLT DCA DTW FLL LGA MCO MDW PHL TPA',
-//           'TPA HNL MCO PDX SAN', 'PDX MIA FLL LGA MCO TPA']
 
 var abbrDict = {
   'Atlanta Hawks' : 'ATL',
@@ -168,52 +157,6 @@ var otherTeam = "";
 var ontime;
 var fare;
 
-// var airlineLookUp = {
-//   'AA': 'American Airlines',
-//   'OO': 'SkyWest Airlines',
-//   'DL': 'Delta Airlines',
-//   'HA': 'Hawaiian Airlines',
-//   'F9': 'Frontier Airlines',
-//   'B6': 'JetBlue Airways',
-//   'US': 'US Airways' ,
-//   'AS': 'Alaska Airlines',
-//   'NK': 'Spirit Airlines',
-//   'MQ': 'Envoy Air',
-//   'WN': 'Southwest Airlines',
-//   'VX': 'Virgin America',
-//   'EV': 'EVA Air',
-//   'UA': 'United Airlines'
-// }
-//
-// var airlineColors = {
-//   'AA': '#ABFAA9',
-//   'OO': '#00A9A5',
-//   'DL': '#90C2E7',
-//   'HA': '#F7D6E0',
-//   'F9': '#60492C',
-//   'B6': '#9F84BD',
-//   'US': '#0D2149' ,
-//   'AS': '#7D7C84',
-//   'NK': '#E9D985',
-//   'MQ': '#950952',
-//   'WN': '#D35269',
-//   'VX': '#FE7F2D',
-//   'EV': '#8A6552',
-//   'UA': '#6E44FF'
-// }
-
-// create datastructure that will hold (k,v) pairs where
-// k = "CITYNAME AIRPORTCODE", and V = list of airport codes
-// that are unavailablePaths from the given airport
-// var source = [];
-// var unavailableFlights = {};
-// function availableFlights(){
-//   for (var i =0; i<airportCityNames.length; i++){
-//     source.push(airportCityNames[i] + " " + teamNames[i]);
-//     unavailableFlights[top30Airports[i]] = []
-//     // unavailablePaths[i].split(" ");
-//   }
-// }
 
 var pairs = [];
 var dict = {};
@@ -290,11 +233,7 @@ function plotAll() {
   .classed("infoCardVisible", true)
   .classed("infoCard", false);
   displayPath(teamOne, otherTeam);
-  // displayDelays(teamOne, otherTeam, season);
-  // displayFlightTimes(teamOne, otherTeam, season);
-  // displayPrice(teamOne, otherTeam,season);
   displayStats(teamOne, otherTeam, "2017-2018");
-  // showCancellations(teamOne, otherTeam, season);
 }
 
 function reset() {
@@ -303,7 +242,6 @@ function reset() {
   .attr("disabled", null);
 }
 
-// availableFlights();
 matchups();
 populateCities();
 
@@ -347,7 +285,7 @@ function displayCities() {
  }
 
 //  draw path
- function displayPath(teamOne, teamTwo) {
+function displayPath(teamOne, teamTwo) {
     coord1 = projection([teams["$" + teamOne].Longitude,teams["$" + teamOne].Latitude])
     coord2 = projection([teams["$" + teamTwo].Longitude,teams["$" + teamTwo].Latitude])
 
@@ -366,7 +304,13 @@ function displayCities() {
     .style("fill", "#FFFFFF");
  }
 
- function displayStats(teamOne, otherTeam, year) {
+function displayStats(teamOne, otherTeam, year) {
+   // TODO: year will keep track of which year the user has selected
+   // in a separate function, make the year buttons change the year variable
+   // in this function, fetch the stats from the two teams and display
+   // the stuff as described above
+   // the year will help you choose which year in the var teams to use
+
 
    // var wins1 = teams[teamOne].["$" + year.slice(-4)];
    // console.log(wins1);
@@ -380,6 +324,18 @@ function displayCities() {
    // .text(teamOne + "wins: " + wins1);
  }
 
+function displayMatchup(homeTeam, awayTeam, year) {
+  // TODO: show the head to head matchups. year will help you choose which var to used
+  // fifteen, sixteen, seventeen, or eighteen. You will then go into that var and search
+  // for the games that have the homeTeam as Team1 and the awayTeam as Team2, and you will
+  // create a list of PTS1 and PTS2 pairs that will each be displayed
+
+}
+
+function displayLeaders(year) {
+  // TODO: display the stats for the season summary leaders
+
+}
 
 
 displayStats('Atlanta ATL', 'Golden State GSW', "2017-2018");
@@ -442,7 +398,7 @@ function resetColors() {
   for(var i = 0; i < curr.length; i++) {
     curr[i].style.backgroundColor = "#FFFFFF";
   }
-  document.getElementById("twentyeighteen").style.backgroundColor = '#000000';
+  document.getElementById("twentyeighteen").style.backgroundColor = 'gray';
 }
 
 function conditionalReset() {
@@ -529,9 +485,8 @@ d3.queue()
     .attr("d", function (state) {
       return pathGenerator(state)
     })
-    .style("stroke", "#FFFFFF")
-    .style("fill", "#778899");
-    // ^^^ map fill color that blue: #4a96ad gray: #778899 pale: #f5f3ee white: #FFFFFF
+    .style("stroke", "#FFFFFF").style("fill", "blue");
+    // ^^^ colors gray: #778899 white: #FFFFFF
 
     svg.append("text")
     .attr("visibility", "hidden")
