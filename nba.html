@@ -62,7 +62,7 @@
   <hr>
   <div id = "General" class = "card-panel infoCard">
     <h1> General Team Stats </h1>
-    <!-- TODO: Place both teams' logo upon selection.
+    <!-- TODO: Place both teams' logo upon selection. Images should be in the assets folder.
      Make 82 basketballs for each team, change the colors for the
     number of wins that team won in the given season -->
   </div>
@@ -71,7 +71,7 @@
   <hr class = "infoCard">
   <div id = "Matchup" class = "card-panel infoCard">
       <h1> Season Matchup Record </h1>
-      <!-- TODO: Display the scores using a transition circle or something
+      <!-- TODO: Display the scores using a transition circle or something.
       inspiration here:
       http://jsfiddle.net/chrisJamesC/9ChXk/18/
       -->
@@ -170,6 +170,8 @@ function matchups(){
 
 // creating team selection table
 function populateCities(){
+  // TODO: make it so that the teams selected stay
+  // highlighted until reset or another two teams are picked
 
   var tableDiv = d3.select("#teamTable");
   var table = tableDiv.append("TABLE");
