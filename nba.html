@@ -490,14 +490,15 @@ function displayMatchup(homeTeam, awayTeam, year) {
     d3.select("#game2date")
     .text(games[1][1].Date.slice(3));
 
-    if (games[1][1].PTS1>games[1][1].PTS2){
-      d3.select("#game2winner")
-      .attr("xlink:href","assets/"+homeTeam+".png")
+    if (Number(games[1][1].PTS1) > Number(games[1][1].PTS2)){
+      var winner2 = homeTeam;
     }
     else{
-      d3.select("#game2winner")
-      .attr("xlink:href","assets/"+awayTeam+".png")
+      var winner2 = awayTeam;
     }
+
+    d3.select("#game2winner")
+    .attr("xlink:href","assets/"+winner2+".png")
   }
   else{
     d3.select("#matchup2score")
@@ -516,16 +517,16 @@ function displayMatchup(homeTeam, awayTeam, year) {
     d3.select("#winnertext")
     .text("");
   }
-  console.log(games[1][0].PTS1);
-  console.log(games[1][0].PTS2);
-  if (games[1][0].PTS1>games[1][0].PTS2){
-    d3.select("#game1winner")
-    .attr("xlink:href","assets/"+homeTeam+".png")
+
+  if (Number(games[1][0].PTS1) > Number(games[1][0].PTS2)){
+    var winner1=homeTeam;
   }
   else{
-    d3.select("#game1winner")
-    .attr("xlink:href","assets/"+awayTeam+".png")
+    var winner1=awayTeam;
   }
+
+  d3.select("#game1winner")
+  .attr("xlink:href","assets/"+winner1+".png");
 
 }
 
