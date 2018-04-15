@@ -62,9 +62,6 @@
   <hr>
   <div id = "General" class = "card-panel infoCard">
     <h1> General Team Stats </h1>
-    <!-- TODO: Place both teams' logo upon selection. Images should be in the assets folder.
-     Make 82 basketballs for each team, change the colors for the
-    number of wins that team won in the given season -->
     <h2 id="generalSeasonLabel" class = "centered"> 2017-2018</h3>
     <svg id="general" width="600" height="450">
       <image id="teamOnePic" height="100" width="100" />
@@ -80,6 +77,12 @@
   <hr class = "infoCard">
   <div id = "Matchup" class = "card-panel infoCard">
       <h1> Season Matchup Record </h1>
+      <svg id="matchup" width="600" height="450">
+        <text font-size="20" color="black" x="0" y="50">Game 1: </text>
+        <text id="matchupscore" x="0" y="50" font-size="20">Score</text>
+        <text id="matchupgame2" x="0" y="150" font-size="20"></text>
+        <text id="matchup2score" x="0" y="200" font-size="20">Score</text>
+      </svg>
       <!-- TODO: Display the scores using a transition circle or something.
       inspiration here:
       http://jsfiddle.net/chrisJamesC/9ChXk/18/
@@ -246,6 +249,7 @@ function plotAll() {
   .classed("infoCard", false);
   displayPath(teamOne, otherTeam);
   displayStats(teamOne, otherTeam, year);
+  displayMatchup(teamOne, otherTeam, year);
 }
 
 function reset() {
@@ -414,11 +418,79 @@ function displayStats(teamOne, otherTeam, year) {
   }
  }
 
+function valuesToArray(object) {
+  //helper function to turn nested objects into arrays
+   return Object.keys(object).map(function (d) { return object[d]; });
+ }
+
 function displayMatchup(homeTeam, awayTeam, year) {
   // TODO: show the head to head matchups. year will help you choose which var to used
   // fifteen, sixteen, seventeen, or eighteen. You will then go into that var and search
   // for the games that have the homeTeam as Team1 and the awayTeam as Team2, and you will
   // create a list of PTS1 and PTS2 pairs that will each be displayed
+  var home = nbaCities[abbr.indexOf(homeTeam)] +" " + teamNames[abbr.indexOf(homeTeam)];
+  var away = nbaCities[abbr.indexOf(awayTeam)] +" " + teamNames[abbr.indexOf(awayTeam)];
+
+  if (year=="2017-2018"){
+    var val = eighteen.find(function(d) {
+      return d.key == home;
+    })
+  }
+  if (year=="2016-2017"){
+    var val = seventeen.find(function(d) {
+      return d.key == home;
+    })
+  }
+  if (year=="2015-2016"){
+    var val = sixteen.find(function(d) {
+      return d.key == home;
+    })
+  }
+  if (year=="2014-2015"){
+    var val = fifteen.find(function(d) {
+      return d.key == home;
+    })
+  }
+
+  var homegames = valuesToArray(val);
+
+  var val = homegames[1].find(function(d) {
+    return d.key == away;
+  })
+
+  var games = valuesToArray(val);
+
+  var text = homeTeam + " Scored: " + games[1][0].PTS1 +
+  " " + awayTeam + " Scored: " + games[1][0].PTS2;
+  d3.select("#matchupscore")
+  .attr("x","0")
+  .attr("y","100")
+  .attr("font-size","20")
+  .text(text);
+
+  //games[1][0] is game 1 of home team vs away team1
+  //games[1][1] is game 2, they only have 2 games max
+  //games[1][0].PTS1 is Home Team's points in game 1
+  //games[1][0].PTS2 is Away Team's points in game 1 etc.
+  if(games[1].length>1){
+    var text2 = homeTeam + " Scored: " + games[1][1].PTS1 +
+    " " + awayTeam + " Scored: " + games[1][1].PTS2;
+
+    d3.select("#matchup2score")
+    .text(text2);
+
+    d3.select("#matchupgame2")
+    .text("Game 2:");
+  }
+  else{
+    d3.select("#matchup2score")
+    .text("None Played");
+
+    d3.select("#matchupgame2")
+    .text("Game 2:");
+  }
+
+
 
 }
 
@@ -515,41 +587,26 @@ d3.queue()
 .defer(d3.csv, "nbateams.csv")
 .defer(d3.json, "us.json")
 .await(function(error, rawFifteen, rawSixteen, rawSeventeen, rawEighteen, rawTeams, rawUS) {
-    fifteen = d3.map(rawFifteen, function(d) {
-      return [d.Team1, d.PTS1, d.Team2, d.PTS2, d.Date];
-    });
+    fifteen = d3.nest()
+      .key(function(d) {return d.Team1;})
+      .key(function(d) {return d.Team2;})
+      .entries(rawFifteen);
 
-    fifteen.each(function(d) {
-      d.PTS1 = Number(d.PTS1);
-      d.PTS2 = Number(d.PTS2);
-    });
+    sixteen = d3.nest()
+      .key(function(d) {return d.Team1;})
+      .key(function(d) {return d.Team2;})
+      .entries(rawSixteen);
 
-    sixteen = d3.map(rawSixteen, function(d) {
-      return [d.Team1, d.PTS1, d.Team2, d.PTS2, d.Date];
-    });
+    seventeen = d3.nest()
+      .key(function(d) {return d.Team1;})
+      .key(function(d) {return d.Team2;})
+      .entries(rawSeventeen);
 
-    sixteen.each(function(d) {
-      d.PTS1 = Number(d.PTS1);
-      d.PTS2 = Number(d.PTS2);
-    });
+    eighteen = d3.nest()
+      .key(function(d) {return d.Team1;})
+      .key(function(d) {return d.Team2;})
+      .entries(rawEighteen);
 
-    seventeen = d3.map(rawSeventeen, function(d) {
-      return [d.Team1, d.PTS1, d.Team2, d.PTS2, d.Date];
-    });
-
-    seventeen.each(function(d) {
-      d.PTS1 = Number(d.PTS1);
-      d.PTS2 = Number(d.PTS2);
-    });
-
-    eighteen = d3.map(rawEighteen, function(d) {
-      return [d.Team1, d.PTS1, d.Team2, d.PTS2, d.Date];
-    });
-
-    eighteen.each(function(d) {
-      d.PTS1 = Number(d.PTS1);
-      d.PTS2 = Number(d.PTS2);
-    });
 
 
     teams = d3.map(rawTeams, function(d) {
