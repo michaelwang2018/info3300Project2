@@ -359,6 +359,8 @@ function displayStats(teamOne, otherTeam, year) {
   .attr("y","120")
   .text(otherTeam + " wins: " + wins2);
 
+  var total = 0;
+
   for (i=0;i<9;i++){
 
     if (i>7){
@@ -369,14 +371,14 @@ function displayStats(teamOne, otherTeam, year) {
     }
 
     while (j<10){
-      if ((8+i*8+j)<wins1){
+      if ((total)<wins1){
         var team1ballcolor = "orange";
       }
       else{
         var team1ballcolor = "grey";
       }
 
-      if ((8+i*8+j)<wins2){
+      if ((total)<wins2){
         var team2ballcolor = "orange";
       }
       else{
@@ -405,7 +407,9 @@ function displayStats(teamOne, otherTeam, year) {
       .attr("height","15")
       .attr("width","15")
       .style("fill",team2ballcolor);
+
       j++;
+      total++;
     }
   }
  }
