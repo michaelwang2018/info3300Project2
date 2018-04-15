@@ -65,6 +65,15 @@
     <!-- TODO: Place both teams' logo upon selection. Images should be in the assets folder.
      Make 82 basketballs for each team, change the colors for the
     number of wins that team won in the given season -->
+    <h2 id="generalSeasonLabel" class = "centered"> 2017-2018</h3>
+    <svg id="general" width="600" height="450">
+      <image id="teamOnePic" height="100" width="100" />
+      <text id="vs" x="275" y="50" font-size="35">VS.</text>
+      <image id="otherTeamPic" height="100" width="100"/>
+      <text id="teamOneWins" />
+      <text id="otherTeamWins"/>
+    </svg>
+
   </div>
 
   <!-- Delays -->
@@ -231,11 +240,12 @@ function populateCities(){
 }
 
 function plotAll() {
+  var year = document.getElementById("seasonLabel").innerHTML;
   d3.selectAll(".infoCard")
   .classed("infoCardVisible", true)
   .classed("infoCard", false);
   displayPath(teamOne, otherTeam);
-  displayStats(teamOne, otherTeam, "2017-2018");
+  displayStats(teamOne, otherTeam, year);
 }
 
 function reset() {
@@ -307,23 +317,97 @@ function displayPath(teamOne, teamTwo) {
  }
 
 function displayStats(teamOne, otherTeam, year) {
-   // TODO: year will keep track of which year the user has selected
-   // in a separate function, make the year buttons change the year variable
-   // in this function, fetch the stats from the two teams and display
-   // the stuff as described above
-   // the year will help you choose which year in the var teams to use
+   document.getElementById("generalSeasonLabel").innerHTML = year;
 
+   d3.select("#teamOnePic")
+   .attr("xlink:href","assets/"+teamOne+".png")
+   .attr("x","50px")
+   .attr("height","100px");
 
-   // var wins1 = teams[teamOne].["$" + year.slice(-4)];
-   // console.log(wins1);
-   // if (year == "2017-2018") {
-   //   var wins1 = teams[teamOne].["$" + year.slice(-4)];
-   //   console.log(wins1);
-   // }
-   // var div = d3.select("#General");
-   // div.append("h3")
-   // .attr("class", "info")
-   // .text(teamOne + "wins: " + wins1);
+   d3.select("#otherTeamPic")
+   .attr("xlink:href","assets/"+otherTeam+".png")
+   .attr("height","100px")
+   .attr("x","450px");
+
+   if (year == "2017-2018") {
+     var wins1 = teams["$"+teamOne].y2018;
+     var wins2 = teams["$"+otherTeam].y2018;
+   }
+
+   if (year == "2016-2017") {
+      var wins1 = teams["$"+teamOne].y2017;
+      var wins2 = teams["$"+otherTeam].y2017;
+   }
+
+   if (year == "2015-2016") {
+     var wins1 = teams["$"+teamOne].y2016;
+     var wins2 = teams["$"+otherTeam].y2016;
+   }
+
+   if (year == "2014-2015") {
+     var wins1 = teams["$"+teamOne].y2015;
+     var wins2 = teams["$"+otherTeam].y2015;
+   }
+
+  var div = d3.select("#teamOneWins")
+  .attr("x","60")
+  .attr("y","120")
+  .text(teamOne + " wins: " + wins1);
+
+  var div = d3.select("#otherTeamWins")
+  .attr("x","450")
+  .attr("y","120")
+  .text(otherTeam + " wins: " + wins2);
+
+  for (i=0;i<9;i++){
+
+    if (i>7){
+      var j = 7;
+    }
+    else{
+      var j = 0;
+    }
+
+    while (j<10){
+      if ((8+i*8+j)<wins1){
+        var team1ballcolor = "orange";
+      }
+      else{
+        var team1ballcolor = "grey";
+      }
+
+      if ((8+i*8+j)<wins2){
+        var team2ballcolor = "orange";
+      }
+      else{
+        var team2ballcolor = "grey";
+      }
+
+      if (i>7){
+        var last = 140;
+      }
+      else{
+        var last = 0;
+      }
+
+      var div = d3.select("#general")
+      .append("rect")
+      .attr("x",j*20-last)
+      .attr("y",(140+i*20))
+      .attr("height","15")
+      .attr("width","15")
+      .style("fill",team1ballcolor);
+
+      var div = d3.select("#general")
+      .append("rect")
+      .attr("x",400+j*20-last)
+      .attr("y",(140+i*20))
+      .attr("height","15")
+      .attr("width","15")
+      .style("fill",team2ballcolor);
+      j++;
+    }
+  }
  }
 
 function displayMatchup(homeTeam, awayTeam, year) {
@@ -340,7 +424,6 @@ function displayLeaders(year) {
 }
 
 
-displayStats('Atlanta ATL', 'Golden State GSW', "2017-2018");
 
 
 function rgbToHex(col)
@@ -487,7 +570,7 @@ d3.queue()
     .attr("d", function (state) {
       return pathGenerator(state)
     })
-    .style("stroke", "#FFFFFF").style("fill", "blue");
+    .style("stroke", "#FFFFFF").style("fill", "darkblue");
     // ^^^ colors gray: #778899 white: #FFFFFF
 
     svg.append("text")

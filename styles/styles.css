@@ -6,7 +6,7 @@
 body {
   width: 100%;
   text-align:center;
-  
+
   background: #FFFFFF;
   color: black;
 }
@@ -53,7 +53,7 @@ path.state{
 }
 
 path{
-  stroke: black;
+  stroke: red;
 }
 
 .home-cta {
