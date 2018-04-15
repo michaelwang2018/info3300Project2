@@ -321,6 +321,7 @@ function displayPath(teamOne, teamTwo) {
  }
 
 function displayStats(teamOne, otherTeam, year) {
+  //TODO make basketballs appear instead of rectangles
    document.getElementById("generalSeasonLabel").innerHTML = year;
 
    d3.select("#teamOnePic")
@@ -428,6 +429,9 @@ function displayMatchup(homeTeam, awayTeam, year) {
   // fifteen, sixteen, seventeen, or eighteen. You will then go into that var and search
   // for the games that have the homeTeam as Team1 and the awayTeam as Team2, and you will
   // create a list of PTS1 and PTS2 pairs that will each be displayed
+
+  //TODO:Decorate the data
+
   var home = nbaCities[abbr.indexOf(homeTeam)] +" " + teamNames[abbr.indexOf(homeTeam)];
   var away = nbaCities[abbr.indexOf(awayTeam)] +" " + teamNames[abbr.indexOf(awayTeam)];
 
@@ -489,7 +493,6 @@ function displayMatchup(homeTeam, awayTeam, year) {
     d3.select("#matchupgame2")
     .text("Game 2:");
   }
-
 
 
 }
