@@ -78,10 +78,16 @@
   <div id = "Matchup" class = "card-panel infoCard">
       <h1> Season Matchup Record </h1>
       <svg id="matchup" width="600" height="450">
-        <text font-size="20" color="black" x="0" y="50">Game 1: </text>
-        <text id="matchupscore" x="0" y="50" font-size="20">Score</text>
-        <text id="matchupgame2" x="0" y="150" font-size="20"></text>
-        <text id="matchup2score" x="0" y="200" font-size="20">Score</text>
+        <text font-size="20" x="0" y="50">Game 1: </text>
+        <text font-size="20" x="520" y="50">Winner </text>
+        <image id="game1winner" height="100" width="100" x="500" y="60"/>
+        <text id="game1date" font-size="20" x="0" y="100"> </text>
+        <text id="matchupscore" x="0" y="150" font-size="20">Score</text>
+        <text id="matchupgame2" x="0" y="270" font-size="20"></text>
+        <text id="game2date" font-size="20" x="0" y="320"> </text>
+        <text id="matchup2score" x="0" y="370" font-size="20"></text>
+        <text id="winnertext" font-size="20" x="520" y="270">Winner </text>
+        <image id="game2winner" height="100" width="100" x="500" y="280"/>
       </svg>
       <!-- TODO: Display the scores using a transition circle or something.
       inspiration here:
@@ -464,36 +470,67 @@ function displayMatchup(homeTeam, awayTeam, year) {
 
   var games = valuesToArray(val);
 
-  var text = homeTeam + " Scored: " + games[1][0].PTS1 +
-  " " + awayTeam + " Scored: " + games[1][0].PTS2;
+  var text = homeTeam + ": " + games[1][0].PTS1 +
+  " --- " + awayTeam + ": " + games[1][0].PTS2;
   d3.select("#matchupscore")
-  .attr("x","0")
-  .attr("y","100")
-  .attr("font-size","20")
   .text(text);
+
+  d3.select("#game1date")
+  .text(games[1][0].Date.slice(3));
 
   //games[1][0] is game 1 of home team vs away team1
   //games[1][1] is game 2, they only have 2 games max
   //games[1][0].PTS1 is Home Team's points in game 1
   //games[1][0].PTS2 is Away Team's points in game 1 etc.
   if(games[1].length>1){
-    var text2 = homeTeam + " Scored: " + games[1][1].PTS1 +
-    " " + awayTeam + " Scored: " + games[1][1].PTS2;
+    var text2 = homeTeam + ": " + games[1][1].PTS1 +
+    " --- " + awayTeam + ": " + games[1][1].PTS2;
 
     d3.select("#matchup2score")
-    .text(text2);
+    .text(text2)
+    .attr("y","370");
 
     d3.select("#matchupgame2")
     .text("Game 2:");
+
+    d3.select("#game2date")
+    .text(games[1][1].Date.slice(3));
+
+    if (games[1][1].PTS1>games[1][1].PTS2){
+      d3.select("#game2winner")
+      .attr("xlink:href","assets/"+homeTeam+".png")
+    }
+    else{
+      d3.select("#game2winner")
+      .attr("xlink:href","assets/"+awayTeam+".png")
+    }
   }
   else{
     d3.select("#matchup2score")
+    .attr("y","320")
     .text("None Played");
 
     d3.select("#matchupgame2")
     .text("Game 2:");
-  }
 
+    d3.select("#game2winner")
+    .attr("xlink:href","");
+
+    d3.select("#game2date")
+    .text("");
+
+    d3.select("#winnertext")
+    .text("");
+  }
+  console.log(homeTeam);
+  if (games[1][0].PTS1>games[1][0].PTS2){
+    d3.select("#game1winner")
+    .attr("xlink:href","assets/"+homeTeam+".png")
+  }
+  else{
+    d3.select("#game1winner")
+    .attr("xlink:href","assets/"+awayTeam+".png")
+  }
 
 }
 
