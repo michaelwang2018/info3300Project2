@@ -500,6 +500,9 @@ function displayMatchup(homeTeam, awayTeam, year) {
 
     d3.select("#game2winner")
     .attr("xlink:href","assets/"+winner2+".png")
+
+    d3.select("#winnertext")
+    .text("Winner");
   }
   else{
     d3.select("#matchup2score")
