@@ -106,18 +106,36 @@
 <div id = "Leaders" class = "card-panel infoCard">
   <h1>Season Summary</h1>
   <!-- TODO: Update stats for season MVP, ROTY, and Season Champion -->
-  <svg width="600" height="600">
-    <text font-size="20" x="200" y="50">NBA Champion: </text>
-    <text id="champion" x="200" y="75" font-size="20"></text>
-    <image id="championLogo" height="100" width="100" x="200" y="100"/>
+  <svg width="800" height="800">
+    <text font-size="20" x="250" y="150">NBA Champion: </text>
+    <text id="champion" x="250" y="170" font-size="20"></text>
+    <image id="championLogo" height="200" width="200" x="420" y="50"/>
 
-    <text font-size="20" x="200" y="250">Most Valuable Player: </text>
-    <text id="mvp" x="200" y="275" font-size="20"></text>
-    <image id="mvpImg" height="100" width="100" x="200" y="260"/>
+    <text id="mvp" font-size="20" x="250" y="340">Most Valuable Player: </text>
+    <!-- <text id="mvp" x="250" y="360" font-size="20"></text> -->
+    <image id="mvpImg" height="300" width="300" x="420" y="300"/>
+    <text id="mvpPpg" x="250" y="380" font-size="20"></text>
+    <text id="mvpRpg" x="250" y="400" font-size="20"></text>
+    <text id="mvpApg" x="250" y="420" font-size="20"></text>
+    <text id="mvpFgp" x="250" y="440" font-size="20"></text>
+    <text id="mvp3pp" x="250" y="460" font-size="20"></text>
+    <text id="mvpFtp" x="250" y="480" font-size="20"></text>
+    <text id="mvpSpg" x="250" y="500" font-size="20"></text>
+    <text id="mvpBpg" x="250" y="520" font-size="20"></text>
 
-    <text font-size="20" x="200" y="450">Rookie of the Year: </text>
-    <text id="roty" x="200" y="475" font-size="20"></text>
-    <image id="rotyImg" height="100" width="100" x="200" y="460"/>
+
+
+    <text id="roty" font-size="20" x="250" y="590">Rookie of the Year: </text>
+    <!-- <text id="roty" x="250" y="610" font-size="20"></text> -->
+    <image id="rotyImg" height="300" width="300" x="420" y="550"/>
+    <text id="rotyPpg" x="250" y="630" font-size="20"></text>
+    <text id="rotyRpg" x="250" y="650" font-size="20"></text>
+    <text id="rotyApg" x="250" y="670" font-size="20"></text>
+    <text id="rotyFgp" x="250" y="690" font-size="20"></text>
+    <text id="roty3pp" x="250" y="710" font-size="20"></text>
+    <text id="rotyFtp" x="250" y="730" font-size="20"></text>
+    <text id="rotySpg" x="250" y="750" font-size="20"></text>
+    <text id="rotyBpg" x="250" y="770" font-size="20"></text>
 
 
   </svg>
@@ -564,19 +582,40 @@ function displayLeaders(year) {
 
   var rawMvp = summary['$'+year]['MVP'].split(" ");
   var mvpName = rawMvp[0] + ' ' + rawMvp[1];
-  // points, rebounds, assists
+  // points, rebounds, assists, field goal percentage, 3 point percentage, free throw percentage, steals per game, blocks per game
   var mvpStats = rawMvp[2].split("/");
-  d3.select("#mvp").text(mvpName);
+  mvpStats[0] = mvpStats[0].substring(1);
+  mvpStats[7] = mvpStats[7].slice(0, -1);
+  d3.select("#mvp").text("Most Valuable Player: " + mvpName);
+  d3.select('#mvpPpg').text("Points Per Game: " + mvpStats[0]);
+  d3.select('#mvpRpg').text("Rebound Per Game: " + mvpStats[1]);
+  d3.select('#mvpApg').text("Assists Per Game: " + mvpStats[2]);
+  d3.select('#mvpFgp').text("Field Goal Percentage: " + mvpStats[3]);
+  d3.select('#mvp3pp').text("3-Point Percentage: " + mvpStats[4]);
+  d3.select('#mvpFtp').text("Free Throw Percentage: " + mvpStats[5]);
+  d3.select('#mvpSpg').text("Steals Per Game: " + mvpStats[6]);
+  d3.select('#mvpBpg').text("Blocks Per Game: " + mvpStats[7]);
 
   var rawRoty = summary['$'+year]['ROTY'].split(' ');
   var rotyName = rawRoty[0] + ' ' + rawRoty[1];
   // points, rebounds, assists
   var rotyStats = rawRoty[2].split("/");
-  d3.select("#roty").text(rotyName);
+  rotyStats[0] = rotyStats[0].substring(1);
+  rotyStats[7] = rotyStats[7].slice(0, -1);
+  d3.select("#roty").text("Rookie of the Year: " + rotyName);
+  d3.select("#roty").text.fontWeight = "bold";
+  d3.select('#rotyPpg').text("Points Per Game: " + rotyStats[0]);
+  d3.select('#rotyRpg').text("Rebound Per Game: " + rotyStats[1]);
+  d3.select('#rotyApg').text("Assists Per Game: " + rotyStats[2]);
+  d3.select('#rotyFgp').text("Field Goal Percentage: " + rotyStats[3]);
+  d3.select('#roty3pp').text("3-Point Percentage: " + rotyStats[4]);
+  d3.select('#rotyFtp').text("Free Throw Percentage: " + rotyStats[5]);
+  d3.select('#rotySpg').text("Steals Per Game: " + rotyStats[6]);
+  d3.select('#rotyBpg').text("Blocks Per Game: " + rotyStats[7]);
 
   d3.select("#championLogo").attr("xlink:href","assets/"+abbrDict[thisChamp]+".png");
-  d3.select('mvpImg').attr("xlink:href","assets/"+rawMvp[1]+".png");
-  d3.select('rotyImg').attr("xlink:href","assets/"+rawRoty[1]+".png");
+  d3.select('#mvpImg').attr("xlink:href","assets/"+rawMvp[1]+".png");
+  d3.select('#rotyImg').attr("xlink:href","assets/"+rawRoty[1]+".png");
 }
 
 
