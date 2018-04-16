@@ -563,15 +563,18 @@ function displayLeaders(year) {
 
   var rawMvp = summary['$'+year]['MVP'].split(" ");
   var mvpName = rawMvp[0] + ' ' + rawMvp[1];
+  // points, rebounds, assists
+  var mvpStats = rawMvp[2].split("/");
   d3.select("#mvp").text(mvpName);
 
   var rawRoty = summary['$'+year]['ROTY'].split(' ');
   var rotyName = rawRoty[0] + ' ' + rawRoty[1];
+  // points, rebounds, assists
+  var rotyStats = rawRoty[2].split("/");
   d3.select("#roty").text(rotyName);
 
   d3.select("#championLogo").attr("xlink:href","assets/"+abbrDict[thisChamp]+".png");
   d3.select('mvpImg').attr("xlink:href","assets/"+rawMvp[1]+".png");
-  console.log(rawMvp[1]+".png");
   d3.select('rotyImg').attr("xlink:href","assets/"+rawRoty[1]+".png");
 }
 
