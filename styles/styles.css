@@ -75,6 +75,8 @@ path{
 .home-cta {
   font-size: 18px;
   display: block;
+  width: 125px;
+  margin: 0 auto;
   background:#FFFFFF;
   /* beige #f5f3ee white #FFFFFF */
   color: black;
