@@ -59,10 +59,10 @@
     </div>
   </div>
 
-<!-- flight times -->
+<!-- season -->
   <hr>
   <div id = "General" class = "card-panel infoCard">
-    <h1> General Team Stats </h1>
+    <h1> Season Record Comparison </h1>
     <h2 id="generalSeasonLabel" class = "centered"> 2017-2018</h3>
     <svg id="general" width="600" height="450">
       <image id="teamOnePic" height="100" width="100" />
@@ -74,10 +74,10 @@
 
   </div>
 
-  <!-- Delays -->
+  <!-- matchups -->
   <hr class = "infoCard">
   <div id = "Matchup" class = "card-panel infoCard">
-      <h1> Season Matchup Record </h1>
+      <h1> Games at Home </h1>
       <svg id="matchup" width="600" height="450">
         <text font-size="20" x="0" y="50">Game 1: </text>
         <text font-size="20" x="520" y="50">Winner </text>
@@ -96,10 +96,26 @@
       -->
   </div>
 
+<!-- Season Leaders -->
 <hr class = "infoCard">
-<div id = "Summary" class = "card-panel infoCard">
-  <h1>Season Leaders</h1>
-  <!-- TODO: Not necessary, but append the summary data, including season MVP, ROTY, Rebounding leader, scoring leader, assist leader -->
+<div id = "Leaders" class = "card-panel infoCard">
+  <h1>Season Summary</h1>
+  <!-- TODO: Update stats for season MVP, ROTY, and Season Champion -->
+  <svg width="600" height="600">
+    <text font-size="20" x="200" y="50">NBA Champion: </text>
+    <text id="champion" x="200" y="75" font-size="20"></text>
+    <image id="championLogo" height="100" width="100" x="200" y="100"/>
+
+    <text font-size="20" x="200" y="250">Most Valuable Player: </text>
+    <text id="mvp" x="200" y="275" font-size="20"></text>
+    <image id="mvpImg" height="100" width="100" x="200" y="260"/>
+
+    <text font-size="20" x="200" y="450">Rookie of the Year: </text>
+    <text id="roty" x="200" y="475" font-size="20"></text>
+    <image id="rotyImg" height="100" width="100" x="200" y="460"/>
+
+
+  </svg>
 </div>
 
 
@@ -120,6 +136,7 @@ var path = d3.geoPath().projection(projection);
 // teams has each team's season record by year,
 // as well as the GPS coordinates
 var teams;
+var summary;
 // These variables have each of the head to head Matchups
 // they have every single game from the corresponding season
 // with the number representing the year the season ends
@@ -163,8 +180,12 @@ var abbrDict = {
    'Orlando Magic' : 'ORL',
    'Philadelphia 76ers' : 'PHI','Phoenix Suns' : 'PHX',
    'Portland Trail Blazers' : 'POR',
-   'Sacramento Kings' : 'SAC', 'San Antonio Spurs' : 'SAS', 'Toronto Raptors' : 'TOR', 'Utah Jazz' : 'UTA',
-   'Washington Wizards' : 'WAS'
+   'Sacramento Kings' : 'SAC',
+   'San Antonio Spurs' : 'SAS',
+   'Toronto Raptors' : 'TOR',
+   'Utah Jazz' : 'UTA',
+   'Washington Wizards' : 'WAS',
+   'TBD' : 'NA'
 }
 
 var team1 = "";
@@ -257,6 +278,7 @@ function plotAll() {
   displayPath(teamOne, otherTeam);
   displayStats(teamOne, otherTeam, year);
   displayMatchup(teamOne, otherTeam, year);
+  displayLeaders(year);
 }
 
 function reset() {
@@ -309,12 +331,10 @@ function displayCities() {
 
 //  draw path
 function displayPath(teamOne, teamTwo) {
-    coord1 = projection([teams["$" + teamOne].Longitude,teams["$" + teamOne].Latitude])
-    coord2 = projection([teams["$" + teamTwo].Longitude,teams["$" + teamTwo].Latitude])
+    coord1 = projection([teams["$" + teamOne].Longitude,teams["$" + teamOne].Latitude]);
+    coord2 = projection([teams["$" + teamTwo].Longitude,teams["$" + teamTwo].Latitude]);
 
-    var midpoint = [(coord1[0] + coord2[0])/2, (coord1[1] + coord2[1])/2]
-
-    var curve = "M " + coord1[0] + " " + coord1[1] + " " + coord2[0] + " " + coord2[1]
+    var curve = "M " + coord1[0] + " " + coord1[1] + " " + coord2[0] + " " + coord2[1];
 
     d3.select("svg")
     .append("path")
@@ -535,11 +555,22 @@ function displayMatchup(homeTeam, awayTeam, year) {
 }
 
 function displayLeaders(year) {
-  // TODO: display the stats for the season summary leaders
+  var thisChamp = summary['$'+year]['Champion'];
+  d3.select("#champion").text(thisChamp);
 
+  var rawMvp = summary['$'+year]['MVP'].split(" ");
+  var mvpName = rawMvp[0] + ' ' + rawMvp[1];
+  d3.select("#mvp").text(mvpName);
+
+  var rawRoty = summary['$'+year]['ROTY'].split(' ');
+  var rotyName = rawRoty[0] + ' ' + rawRoty[1];
+  d3.select("#roty").text(rotyName);
+
+  d3.select("#championLogo").attr("xlink:href","assets/"+abbrDict[thisChamp]+".png");
+  d3.select('mvpImg').attr("xlink:href","assets/"+rawMvp[1]+".png");
+  console.log(rawMvp[1]+".png");
+  d3.select('rotyImg').attr("xlink:href","assets/"+rawRoty[1]+".png");
 }
-
-
 
 
 function rgbToHex(col)
@@ -625,8 +656,9 @@ d3.queue()
 .defer(d3.csv, "nba2016-2017.csv")
 .defer(d3.csv, "nba2017-2018.csv")
 .defer(d3.csv, "nbateams.csv")
+.defer(d3.csv, "nba2014-2018summary.csv")
 .defer(d3.json, "us.json")
-.await(function(error, rawFifteen, rawSixteen, rawSeventeen, rawEighteen, rawTeams, rawUS) {
+.await(function(error, rawFifteen, rawSixteen, rawSeventeen, rawEighteen, rawTeams, rawSummary, rawUS) {
     fifteen = d3.nest()
       .key(function(d) {return d.Team1;})
       .key(function(d) {return d.Team2;})
@@ -647,8 +679,6 @@ d3.queue()
       .key(function(d) {return d.Team2;})
       .entries(rawEighteen);
 
-
-
     teams = d3.map(rawTeams, function(d) {
       return d.Abbreviation;
     });
@@ -656,6 +686,14 @@ d3.queue()
     teams.each(function(d) {
       d.Longitude = Number(d.Longitude)
       d.Latitude = Number(d.Latitude)
+    });
+
+    summary = d3.map(rawSummary, function(d){
+      return d.Year;
+    });
+
+    summary.each(function(d) {
+
     });
 
     states = topojson.feature(rawUS, rawUS.objects.states);
