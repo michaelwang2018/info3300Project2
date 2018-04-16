@@ -6,17 +6,33 @@
 body {
   width: 100%;
   text-align:center;
-
+  font-family: "Roboto Condensed", sans-serif;
   background: #FFFFFF;
   color: black;
 }
 
 .main {
-  margin: 0 auto;
+  margin-right: 200px;
   width: 80%;
   padding: 10px;
-
   display: inline-block;
+}
+
+h1 {
+  font-family: "Graduate";
+}
+
+.displayBlocks {
+  right: 200px;
+}
+
+.sidebar {
+  overflow: hidden;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 200px;
+  height: 100%;
 }
 
 .title>h3 {
@@ -119,16 +135,17 @@ input{
   /* red 142,22,22 */
 }
 
-div.dataSection{
+.dataSection{
   display: block;
-  overflow: overlay;
+  /*overflow: overlay;*/
+  overflow: auto;
+  right: 200px;
 }
 
 .left{
   display: inline-block;
   float:left;
   width: 66%;
-  /*border: 1px solid black;*/
 }
 
 .right{
@@ -139,7 +156,7 @@ div.dataSection{
   /*border: 1px solid black;*/
 }
 
-svg{
+svg {
   /*border: 1px solid black;*/
   justify-content: center;
 }
@@ -232,6 +249,7 @@ hr:after{
 .centered{
   margin: 3px;
   padding: 2px;
+  font-family: "Graduate";
 }
 
 .unselectable{
