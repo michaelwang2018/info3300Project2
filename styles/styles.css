@@ -7,8 +7,7 @@ body {
   width: 100%;
   text-align:center;
   font-family: "Roboto Condensed", sans-serif;
-  background: #FFFFFF;
-  color: black;
+  background: #006CB7;
 }
 
 .main {
@@ -33,6 +32,11 @@ h1 {
   top: 0;
   width: 200px;
   height: 100%;
+}
+
+.title {
+  color: white;
+  text-shadow: 2px 2px #EF164B;
 }
 
 .title>h3 {
@@ -193,6 +197,7 @@ td:hover{
 
 h1{
   font-size: 2.15em;
+  color: "#ff7979";
 }
 
 h2{
@@ -252,6 +257,8 @@ hr:after{
   margin: 3px;
   padding: 2px;
   font-family: "Graduate";
+  color: white;
+  text-shadow: 2px 2px #EF164B;
 }
 
 .unselectable{
@@ -265,6 +272,8 @@ hr:after{
 
 .card-panel{
   /*background-color: #f5f3ee !important;*/
+  box-shadow: 15px 15px #EF164B;
+  /*background-color: #EF164B;*/
 }
 
 /* .replayBtn{
@@ -277,4 +286,11 @@ hr:after{
 
 .infoCardVisible{
   display: block;
+}
+
+#authors {
+  font-family: "Graduate";
+  color: white;
+  text-shadow: 2px 2px #EF164B;
+  padding: 25px;
 }
