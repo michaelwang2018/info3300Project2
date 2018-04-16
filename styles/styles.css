@@ -17,12 +17,13 @@ body {
   display: inline-block;
 }
 
-h1 {
-  font-family: "Graduate";
+.seasonInput {
+  color: #EF164B;
 }
 
-.displayBlocks {
-  right: 200px;
+h1 {
+  font-family: "Graduate";
+  font-weight: bold;
 }
 
 .sidebar {
@@ -81,9 +82,9 @@ path{
   display: block;
   width: 125px;
   margin: 0 auto;
-  background:#FFFFFF;
-  /* beige #f5f3ee white #FFFFFF */
-  color: black;
+  background: #FFFFFF;
+  font-weight: bold;
+  color: #EF164B;
   padding: .5em .25em;
   line-height: 1;
   margin-bottom: 10px;
@@ -94,8 +95,9 @@ path{
 }
 
 .home-cta:hover {
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.5);
     cursor: pointer;
+    background: white;
 }
 
 a {
@@ -211,29 +213,7 @@ h3{
   text-align: center;
 }
 
-#twentyeighteen:hover{
-  background: #0C40F9;
-  /* lighter blue: 0C40F9
-  beige: f5f3ee */
-}
-
-#twentyseventeen:hover{
- background: #0C40F9;
-}
-
-#twentysixteen:hover{
-  background: #0C40F9;
-}
-
-#twentyfifteen:hover{
-  background: #0C40F9;
-}
-
-#reset:hover{
-  background: #0C40F9;
-}
-
-hr{
+hr {
 	text-align: center;
   margin-top: 10px;
 }
@@ -271,14 +251,9 @@ hr:after{
 }
 
 .card-panel{
-  /*background-color: #f5f3ee !important;*/
-  box-shadow: 15px 15px #EF164B;
-  /*background-color: #EF164B;*/
+  box-shadow: 20px 20px #EF164B;
+  margin-top: 50px;
 }
-
-/* .replayBtn{
-  background: #e54747 !important;
-} */
 
 .infoCard{
   display: none;
