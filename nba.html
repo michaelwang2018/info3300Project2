@@ -2,8 +2,7 @@
 <meta charset="utf-8">
 
 <title>INFO 3300 Project 2</title>
-
-<link href="https://fonts.googleapis.com/css?family=Tajawal|Tajawal+Lato" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Graduate|Roboto+Condensed" rel="stylesheet">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="http://d3js.org/topojson.v2.min.js"></script>
@@ -17,47 +16,52 @@
 
 
 <body>
-<div class = "main">
-    <div style = "height: 10px"></div>
-    <hr>
-    <div class = "title">
-      <h1>Matchups of NBA Teams</h1>
-      <h3>How NBA teams fared against each other during the last 4 NBA Seasons</h3>
-    </div>
 
-    <div class = "centered" style = "position: fixed; top: 5%; right: 1.25%">
-      <h3 class = "centered"> Season:</h3>
+    <!-- sidebar -->
+  <div class="sidebar">
+    <div class = "centered" style = "top: 15%; right: 1.25%">
+      <h3 class = "centered" style="font-weight: bold"> Season:</h3>
       <h3 id = "seasonLabel">2017-2018</h3>
-      <h3>Home vs. Away</h3>
+      <h3 style="font-weight: bold">Home vs. Away</h3>
       <h3><span id = "firstTeam">___</span> vs. <span id = "secondTeam">___</span></h3><br>
     </div>
 
-  <div id = "seasons" class = "seasonInput" style = "position: fixed; top: 40%; right: 25px ">
-  <tr>
-    <td> <a style = "background: gray" onclick = "changeBackground('gray', 1)" class = "home-cta btn" id = "twentyeighteen"> 2017-2018 </a> </td>
-    <td> <a onclick = "changeBackground('#ffd700', 2)" class = "home-cta btn" id = "twentyseventeen"> 2016-2017 </a> </td>
-    <td> <a onclick = "changeBackground('#800000', 3)" class = "home-cta btn" id = "twentysixteen"> 2015-2016 </a> </td>
-    <td> <a onclick = "changeBackground('#ffd700', 4)" class = "home-cta btn" id = "twentyfifteen"> 2014-2015 </a> </td>
-    <br>
-    <br>
-    <td> <a onclick = "conditionalReset()" class = "home-cta btn" id = "reset"> Reset </a> </td>
-  </tr>
+    <!-- <div id = "seasons" class = "seasonInput" style = "position: fixed; top: 40%; right: 25px "> -->
+    <div id="seasons" class="seasonInput">
+    <tr>
+      <td> <a style = "background: gray" onclick = "changeBackground('gray', 1)" class = "home-cta btn" id = "twentyeighteen"> 2017-2018 </a> </td>
+      <td> <a onclick = "changeBackground('#ffd700', 2)" class = "home-cta btn" id = "twentyseventeen"> 2016-2017 </a> </td>
+      <td> <a onclick = "changeBackground('#800000', 3)" class = "home-cta btn" id = "twentysixteen"> 2015-2016 </a> </td>
+      <td> <a onclick = "changeBackground('#ffd700', 4)" class = "home-cta btn" id = "twentyfifteen"> 2014-2015 </a> </td>
+      <br>
+      <br>
+      <td> <a onclick = "conditionalReset()" class = "home-cta btn" id = "reset"> Reset </a> </td>
+    </tr>
+    </div>
   </div>
 
-  <hr>
-  <div class = "dataSection card-panel" id= "inputs" height = "600px">
-    <div class = "left">
-        <!-- Show map -->
-        <svg width ="550" height ="500"/>
+
+<div class = "main">
+    <div style = "height: 10px"></div>
+    <div class = "title">
+      <h1 style="font-weight: bold">Matchups of NBA Teams</h1>
+      <h3 style="font-style: italic">How NBA teams fared against each other during the last 4 NBA Seasons</h3>
     </div>
-    <div class = "right">
-      <div class="card-content black-text">
-        <span class="card-title"><h2>Team Matchup<h2></span>
-            <div id = "teamTable">
-            </div>
+
+  <div class="displayBlocks">
+
+    <div class = "dataSection card-panel" id= "inputs">
+      <div class = "left">
+          <!-- Show map -->
+        <svg width ="550" height ="500"/>
+      </div>
+      <div class = "right">
+        <div class="card-content black-text">
+          <span class="card-title"><h2>Team Matchup</h2></span>
+            <div id = "teamTable"></div>
+        </div>
       </div>
     </div>
-  </div>
 
 <!-- season -->
   <hr>
@@ -72,7 +76,7 @@
       <text id="otherTeamWins"/>
     </svg>
 
-  </div>
+    </div>
 
   <!-- matchups -->
   <hr class = "infoCard">
@@ -119,7 +123,6 @@
 </div>
 
 
-<hr class = "infoCard">
 <div style = "height: 25px"></div>
 <h3> Rachel Shim, Trevor Smith, and Michael Wang </h3>
 <div style = "height: 25px"></div>
