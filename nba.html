@@ -73,7 +73,7 @@
     <h2 id="generalSeasonLabel"> 2017-2018</h3>
     <svg id="general" width="600" height="450">
       <image id="teamOnePic" height="100" width="100" />
-      <text id="vs" x="275" y="50" font-size="35">VS.</text>
+      <text id="vs" x="275" y="50" font-size="35" font-family="Graduate">VS.</text>
       <image id="otherTeamPic" height="100" width="100"/>
       <text id="teamOneWins" />
       <text id="otherTeamWins"/>
@@ -85,16 +85,16 @@
   <div id = "Matchup" class = "card-panel infoCard">
       <h1> Games at Home </h1>
       <svg id="matchup" width="600" height="450">
-        <text font-size="20" x="0" y="50">Game 1: </text>
-        <text font-size="20" x="520" y="50">Winner </text>
-        <image id="game1winner" height="100" width="100" x="500" y="60"/>
-        <text id="game1date" font-size="20" x="0" y="100"> </text>
-        <text id="matchupscore" x="0" y="150" font-size="20">Score</text>
+        <text font-size="28px" x="0" y="40" font-family="Graduate" font-weight="bold">Game 1: </text>
+        <text font-size="28" x="460" y="30" font-family="Graduate" font-weight="bold">Winner </text>
+        <image id="game1winner" height="150" width="150" x="450" y="50"/>
+        <text id="game1date" font-size="20" x="10" y="100"> </text>
+        <text id="matchupscore" x="10" y="150" font-size="20">Score</text>
         <text id="matchupgame2" x="0" y="270" font-size="20"></text>
-        <text id="game2date" font-size="20" x="0" y="320"> </text>
-        <text id="matchup2score" x="0" y="370" font-size="20"></text>
-        <text id="winnertext" font-size="20" x="520" y="270">Winner </text>
-        <image id="game2winner" height="100" width="100" x="500" y="280"/>
+        <text id="game2date" font-size="20" x="10" y="320"> </text>
+        <text id="matchup2score" x="10" y="370" font-size="20"></text>
+        <text id="winnertext" font-size="28" x="460" y="270" font-family="Graduate" font-weight="bold">Winner </text>
+        <image id="game2winner" height="150" width="150" x="450" y="280"/>
       </svg>
       <!-- TODO: Display the scores using a transition circle or something.
       inspiration here:
@@ -338,9 +338,9 @@ function populateCities(){
           d3.select("#secondTeam").text("___")
           otherTeam = "";
 
-          // d3.select("#" + curr)
-          // .style("background", "#006CB7")
-          // .style("color", "white");
+          d3.select("#" + curr)
+          .style("background", teamColors[curr][0])
+          .style("color", teamColors[curr][1]);
 
           return;
         }
@@ -578,7 +578,7 @@ function displayMatchup(homeTeam, awayTeam, year) {
   d3.select("#game1date")
   .text(games[1][0].Date.slice(3));
 
-  //games[1][0] is game 1 of home team vs away team1
+  //games[1][0] is of home team vs away team1
   //games[1][1] is game 2, they only have 2 games max
   //games[1][0].PTS1 is Home Team's points in game 1
   //games[1][0].PTS2 is Away Team's points in game 1 etc.
@@ -591,7 +591,10 @@ function displayMatchup(homeTeam, awayTeam, year) {
     .attr("y","370");
 
     d3.select("#matchupgame2")
-    .text("Game 2:");
+    .text("Game 2:")
+    .style("font-size", "28px")
+    .style("font-family", "Graduate")
+    .style("font-weight", "bold");
 
     d3.select("#game2date")
     .text(games[1][1].Date.slice(3));
@@ -607,7 +610,9 @@ function displayMatchup(homeTeam, awayTeam, year) {
     .attr("xlink:href","assets/"+winner2+".png")
 
     d3.select("#winnertext")
-    .text("Winner");
+    .text("Winner")
+    .style("font-family", "Graduate")
+    .style("font-weight", "bold");
   }
   else{
     d3.select("#matchup2score")
@@ -615,7 +620,10 @@ function displayMatchup(homeTeam, awayTeam, year) {
     .text("None Played");
 
     d3.select("#matchupgame2")
-    .text("Game 2:");
+    .text("Game 2:")
+    .style("font-size", "28px")
+    .style("font-family", "Graduate")
+    .style("font-weight", "bold");
 
     d3.select("#game2winner")
     .attr("xlink:href","");
