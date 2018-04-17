@@ -61,7 +61,7 @@
       </div>
       <div class = "right">
         <div class="card-content black-text">
-          <span class="card-title"><h2>Team Matchup</h2></span>
+          <span class="card-title"><h2 style="padding-bottom: 15px; font-weight: bold">Team Matchup</h2></span>
             <div id = "teamTable"></div>
         </div>
       </div>
@@ -210,6 +210,39 @@ var abbrDict = {
    'TBD' : 'NA'
 }
 
+var teamColors = {
+  "ATL": ["#C8192E", "#C4D600"],
+  "BKN": ["#010101", "#FFFFFF"],
+  "BOS": ["#007A33", "#000000"],
+  "CHA": ["#201747", "#00778b"],
+  "CHI": ["#ba0c2f", "#000000"],
+  "CLE": ['#6f263d', "#FFFFFF"],
+  "DAL": ['#0050b5', '#8d9093'],
+  "DEN": ['#418fde', '#ffc72c'],
+  "DET": ['#003da5', '#d50032'],
+  "GSW": ['#ffc72d', '#003da5'],
+  "HOU": ['#ba0c2f', '#8d9093'],
+  "IND": ['#041e42', '#ffb81c'],
+  "LAC": ['#d50032', '#003da5'],
+  "LAL": ['#702f8a', '#ffc72c'],
+  "MEM": ['#23375b', '#6189b9'],
+  "MIA": ['#862633', '#ffa300'],
+  "MIL": ['#2c5234', '#ddcba4'], 
+  "MIN": ['#002b5c', '#c6cfd4'],
+  "NOP": ['#002b5c', '#b4975a'],
+  "NYK": ['#003da5', '#ff671f'],
+  "OKC": ['#007dc3', '#f05133'],
+  "ORL": ['#007dc5', '#c4ced3'],
+  "PHI": ['#006bb6', '#ed174c'],
+  "PHX": ['#e56020', '#1d1160'],
+  "POR": ['#f0163a', '#b6bfbf'],
+  "SAC": ['#724c9f', '#8e9090'],
+  "SAS": ['#b6bfbf', "#FFFFFF"],
+  "TOR": ['#ce1141', '#c4ced3'],
+  "UTA": ['#002b5c', '#f9a01b'],
+  "WAS": ['#0c2340', '#c8102e']
+}
+
 var team1 = "";
 var team2 = "";
 
@@ -247,8 +280,10 @@ function populateCities(){
     for(var j = 0; j < 3; j++){
       var td = tr.append("TD")
       .attr("id", abbrDict[pairs[x]])
-      .text(pairs[x])
-      .style("height", "30px").style("width", "100px")
+      .text(abbr[x])
+      .style("background", "gray")
+      .style("color", "white")
+      .style("height", "40px").style("width", "50px")
       .attr("class", "teamTD");
 
       x = x + 1;
@@ -260,6 +295,29 @@ function populateCities(){
   tds
   .each(function(td){
       var t = d3.select(this);
+
+      t.on("mouseover", function(d) {
+        var teamid = t.attr("id");
+
+        t.style("background", teamColors[teamid][0])
+        .style("color", teamColors[teamid][1])
+
+        ind = abbr.indexOf(teamid);
+
+        d3.select("#cityLabel")
+         .text(nbaCities[ind] + " " + teamNames[ind])
+         .attr("visibility", "visible");
+      });
+
+      t.on("mouseout", function(d) {
+        var teamid = t.attr("id");
+        t.style("background", "gray")
+        .style("color", "white");
+
+        d3.select("#cityLabel")
+        .attr("visibility", "hidden");
+      })
+
       t.on("click", function(){
         var curr = t.attr("id")
         // Selecting First Team upon First Click
@@ -279,6 +337,11 @@ function populateCities(){
           d3.select("#firstTeam").text(teamOne);
           d3.select("#secondTeam").text("___")
           otherTeam = "";
+
+          // d3.select("#" + curr)
+          // .style("background", "#006CB7")
+          // .style("color", "white");
+
           return;
         }
         // Selecting Second Team upon Second Click

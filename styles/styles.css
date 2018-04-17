@@ -161,6 +161,7 @@ input{
   overflow: overlay;
   float:left;
   width: 33%;
+  margin-top: 30px;
   /*border: 1px solid black;*/
 }
 
@@ -174,22 +175,24 @@ table {
 }
 
 td.teamTD{
-    border: 1px solid black;
-    text-align: left;
+    border: 5px solid white;
+    text-align: center;
     padding: .8em 0;
     padding-left: .7em;
     font-size: .5em;
-    width: 100px;
+    width: 50px;
     height:30px;
+    font-size: 12.5px;
+    font-weight: bold;
 }
 
 tr:nth-child(n+2){
   border: 1px solid black;
 }
 
-td:hover{
+td:hover{/*
   cursor: pointer;
-  background: #FFD700;
+  background: #FFD700;*/
   /* red: e54747 gold: FFD700 */
 }
 
