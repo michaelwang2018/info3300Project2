@@ -96,16 +96,11 @@
         <text id="winnertext" font-size="28" x="460" y="270" font-family="Graduate" font-weight="bold">Winner </text>
         <image id="game2winner" height="150" width="150" x="450" y="280"/>
       </svg>
-      <!-- TODO: Display the scores using a transition circle or something.
-      inspiration here:
-      http://jsfiddle.net/chrisJamesC/9ChXk/18/
-      -->
   </div>
 
 <!-- Season Leaders -->
 <div id = "Leaders" class = "card-panel infoCard">
   <h1>Season Summary</h1>
-  <!-- TODO: Update stats for season MVP, ROTY, and Season Champion -->
   <svg width="800" height="1000">
     <text font-size="28" x="150" y="150" font-family="Graduate">NBA Champion: </text>
     <text id="champion" x="200" y="180" font-size="20"></text>
@@ -265,8 +260,6 @@ function matchups(){
 
 // creating team selection table
 function populateCities(){
-  // TODO: make it so that the teams selected stay
-  // highlighted until reset or another two teams are picked
 
   var tableDiv = d3.select("#teamTable");
   var table = tableDiv.append("TABLE");
@@ -433,7 +426,6 @@ function displayPath(teamOne, teamTwo) {
  }
 
 function displayStats(teamOne, otherTeam, year) {
-  //TODO make basketballs appear instead of rectangles
    document.getElementById("generalSeasonLabel").innerHTML = year;
 
    d3.select("#teamOnePic")
